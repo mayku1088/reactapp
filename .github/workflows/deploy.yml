@@ -29,16 +29,16 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./nginx/Dockerfile
+          file: ./nginx/Dockerfile.prod
           push: true
           tags: maykuu1088/nginx:latest
-      - name: Build and Push React
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./frontend/Dockerfile
-          push: true
-          tags: maykuu1088/react:latest
+      # - name: Build and Push React
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     file: ./frontend/Dockerfile
+      #     push: true
+      #     tags: maykuu1088/react:latest
       # - name: Deploy
       #   uses: appleboy/ssh-action@v1
       #   with:
