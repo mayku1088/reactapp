@@ -1,0 +1,88 @@
+import React, { useEffect, useState } from 'react'
+import Title from '../../components/Title'
+import { assets, dashboardDummyData } from '../../assets/assets'
+import { useAppContext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
+
+const Dashboard = () => {
+  const [dashboardData, setDashboardData] = useState({
+    bookings: [],
+    totalBookings: 0,
+    totalRevenue: 0
+  });
+
+  const {currency, user, getToken, axios} = useAppContext();
+
+  const fetchDashboardData = async () => {
+    try{
+      const {data} = await axios.get('/get-user-bookings');
+
+      if(data.success){
+        setDashboardData(data.dashboardData);
+      }else{
+        toast.error(data.message);
+      }
+    }catch(error){
+      toast.error(error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  return (
+    <div>
+      <Title title="Dashboard" align="left" font="outfit" subTitle="Monitor your blah blah" />
+
+      <div className="flex gap-4 my-8">
+        <div className="bg-primary/3 border border-primary/10 rounded flex p-4 pr-8">
+          <img src={assets.totalBookingIcon} alt="" className="max-sm:hidden h-10" />
+          <div className="flex flex-col sm:ml-4 font-medium">
+              <p className="text-blue-500 text-lg">Total bookings</p>
+              <p className="text-neutral-400 text-base">{dashboardData.totalBookings}</p>
+          </div>
+        </div>
+
+        <div className="bg-primary/3 border border-primary/10 rounded flex p-4 pr-8">
+          <img src={assets.totalRevenueIcon} alt="" className="max-sm:hidden h-10" />
+          <div className="flex flex-col sm:ml-4 font-medium">
+              <p className="text-blue-500 text-lg">Total revenue</p>
+              <p className="text-neutral-400 text-base">${dashboardData.totalRevenue}</p>
+          </div>
+        </div>
+
+        
+      </div>
+
+      <div>
+        <h2 className="text-xl text-blue-950/70 font-medium mb-5">Recent bookings</h2>
+
+        <div className="w-full max-w-3xl text-left border border-gray-300 rounded-lg max-h-80 overflow-y-scroll">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="py-3 px-4 text-gray-800 font-medium">User Name</th>
+                <th className="py-3 px-4 text-gray-800 font-medium max-sm:hidden">Room Name</th>
+                <th className="py-3 px-4 text-gray-800 font-medium text-center">Total Amount</th>
+                <th className="py-3 px-4 text-gray-800 font-medium text-center">Payment Status</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              {dashboardData.bookings.map((item, index) => ( 
+                <tr key={index}>
+                  <td className="py-3 px-4 text-gray-700 border-t border-gray-300">{item.owns.username}</td>
+                  <td className="py-3 px-4 text-gray-700 border-t border-gray-300 max-sm:hidden">{item.roomm.room_type}</td>
+                  <td className="py-3 px-4 text-gray-700 border-t border-gray-300 text-center">${item.total_price}</td>
+                  <td className="py-3 px-4 border-t border-gray-300 flex"><button className={`py-1 px-3 text-xs rounded-full mx-auto ${item.is_paid ? 'bg-green-200 text-green-600' : 'bg-amber-200 text-yellow-600'}`}>{item.is_paid ? 'Completed' : 'Pending'}</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Dashboard
