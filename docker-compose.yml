@@ -1,11 +1,9 @@
 services:
   frontend:
     container_name: react
-    image: node:22
-    working_dir: /app
+    build: ./frontend
     volumes:
       - ./frontend:/app
-    command: sh -c "npm install && npm run dev -- --host"
     ports:
       - "5173:5173"
 
