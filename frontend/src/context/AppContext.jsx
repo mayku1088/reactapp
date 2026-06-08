@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import {useAuth, useUser} from "@clerk/clerk-react";
 import {toast} from 'react-hot-toast';
 
-axios.defaults.baseURL = '';//import.meta.env.VITE_BACKEND_URL;
+axios.defaults.baseURL = '/api';//import.meta.env.VITE_BACKEND_URL;
 
 const AppContext = createContext();
 

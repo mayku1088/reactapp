@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import axios from "axios";
 
-axios.defaults.baseURL = '';//import.meta.env.VITE_BACKEND_URL;
+axios.defaults.baseURL = '/api';//import.meta.env.VITE_BACKEND_URL;
 
 const initialState = {
     bookings_store: [],
