@@ -1,5 +1,5 @@
 FROM nginx:latest
 
-COPY backend/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-COPY public /var/www/html/public
+COPY backend/public /var/www/html/public
