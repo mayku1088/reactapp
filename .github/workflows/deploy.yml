@@ -25,6 +25,8 @@ jobs:
           context: .
           push: true
           tags: maykuu1088/backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Build and Push Nginx
         uses: docker/build-push-action@v6
         with:
@@ -32,6 +34,8 @@ jobs:
           file: ./nginx/Dockerfile.prod
           push: true
           tags: maykuu1088/nginx:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       # - name: Build and Push React
       #   uses: docker/build-push-action@v6
       #   with:
