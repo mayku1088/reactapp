@@ -2,9 +2,16 @@ FROM composer:latest AS vendor
 
 WORKDIR /app
 
-COPY ./backend .
+COPY backend/composer.json backend/composer.lock ./
 
-RUN composer install --no-dev
+RUN composer install \
+    --no-dev \
+    --no-scripts \
+    --optimize-autoloader
+
+# COPY ./backend .
+
+
 
 
 FROM php:8.2-fpm
