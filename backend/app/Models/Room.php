@@ -33,7 +33,7 @@ class Room extends Model
 
         foreach ($this->images as $image) {
             if (!empty($image)) {
-                $company_image[] = asset("/storage/images/" . $image);
+                $company_image[] = $image;
             }
         }
 

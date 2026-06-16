@@ -1,30 +1,18 @@
-FROM composer:latest AS vendor
-
-WORKDIR /app
-
-COPY backend/composer.json backend/composer.lock ./
-
-RUN composer install \
-    --no-dev \
-    --no-scripts \
-    --optimize-autoloader
-
-# COPY ./backend .
-
-
-
-
 FROM php:8.2-fpm
 
 WORKDIR /var/www/html
 
 COPY ./backend .
 
-COPY --from=vendor /app/vendor ./vendor
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-RUN apt-get update && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libpq-dev \
+    && docker-php-ext-install exif pcntl sockets zip pdo pdo_pgsql
 
 CMD ["php-fpm"]

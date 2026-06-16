@@ -8,6 +8,7 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
@@ -42,7 +43,7 @@ class HotelController extends Controller
 
     public function registerRoom(Request $request)
     {
-        Log::info($request->all());
+        //Log::info($request->all());
         //dd($request->all());
         $data = [
             'hotel' => $request->hotel,
@@ -55,12 +56,14 @@ class HotelController extends Controller
 
         foreach ($request->images as $image) {
             //dd($image);
-            $image->storeAs(
+            $path = $image->storeAs(
                 'images',
                 $image->getClientOriginalName()
             );
 
-            $images[] = $image->getClientOriginalName();
+            $url = Storage::url($path);
+
+            $images[] = $url;
         }
 
         $data['images'] = $images;
